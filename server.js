@@ -30,11 +30,11 @@ function makeDeck(copies=1){
   return d;
 }
 function value(c){
-  if(c.rank==='K' && !RED.has(c.suit)) return 13;
+  if(c.rank==='K' && !RED.has(c.suit)) return 10;
   if(c.rank==='K' && RED.has(c.suit)) return -2;
   if(c.rank==='A') return 1;
-  if(c.rank==='J') return 11;
-  if(c.rank==='Q') return 12;
+  if(c.rank==='J') return 10;
+  if(c.rank==='Q') return 10;
   return Number(c.rank);
 }
 function effectFor(c){
@@ -116,7 +116,7 @@ io.on('connection',socket=>{
 
   socket.on('initialReady',(_,cb)=>{try{const {room,player}=requireRoom(socket);if(room.status!=='initial-peek')throw new Error('Bukan fase awal.');if(player.initialPeeked.size!==2)throw new Error('Kamu harus melihat tepat 2 kartu awal.');player.initialReady=true;if(room.players.every(p=>p.initialReady)){room.status='playing';room.turnIndex=0;room.turnStage='awaiting-draw';addLog(room,`Semua pemain siap. Giliran pertama: ${room.players[0].name}.`);}cb({ok:true});broadcast(room);}catch(e){sendError(cb,e);}});
 
-  // Only the player whose turn it is may draw one card from the central deck.
+
   socket.on('draw',({source},cb)=>{try{const {room,player}=requireRoom(socket);if(source!=='deck')throw new Error('Kartu hanya diambil dari dek tengah.');if(!['playing','final-round'].includes(room.status)||room.turnStage!=='awaiting-draw'||currentPlayer(room).id!==socket.id)throw new Error('Belum giliranmu.');if(!room.deck.length){endGame(room,'Dek tengah habis.');cb({ok:true});broadcast(room);return;}const card=room.deck.pop();room.drawn={card,source:'deck',playerId:socket.id};room.turnStage='awaiting-decision';addLog(room,`${player.name} mengambil 1 kartu dari dek tengah.`);cb({ok:true});broadcast(room);}catch(e){sendError(cb,e);}});
 
   socket.on('swapDrawn',({handCardId},cb)=>{try{const {room,player}=requireRoom(socket);if(room.turnStage!=='awaiting-decision'||!room.drawn||room.drawn.playerId!==socket.id)throw new Error('Aksi tidak valid.');const i=player.hand.findIndex(c=>c.id===handCardId);if(i<0)throw new Error('Kartu tangan tidak ditemukan.');const old=player.hand[i];player.hand[i]=room.drawn.card;room.discard.push(old);addLog(room,`${player.name} menukar kartu yang diambil dengan kartu tangannya.`);nextTurn(room);cb({ok:true});broadcast(room);}catch(e){sendError(cb,e);}});
