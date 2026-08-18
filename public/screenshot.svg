@@ -11,8 +11,8 @@
   </defs>
   <rect class="bg" width="100%" height="100%"/>
   <rect x="20" y="20" width="920" height="320" class="panel" rx="8"/>
-  <text x="40" y="52" class="title">Kartu Terkecil — Gameplay (placeholder)</text>
-  <text x="40" y="76" class="muted">Replace this SVG with a real screenshot or add a GIF named <tspan font-family='monospace'>public/demo.gif</tspan></text>
+  <text x="40" y="52" class="title">Interface Game </text>
+  <text x="40" y="76" class="muted"> <tspan font-family='monospace'>public/demo.gif</tspan></text>
 
   <!-- mock cards -->
   <g transform="translate(60,110)">
