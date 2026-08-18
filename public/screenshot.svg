@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360">
+  <defs>
+    <style>
+      .bg { fill: #0b1221 }
+      .panel { fill: #0f1724; stroke: #1f2937; stroke-width: 2 }
+      .card { fill: #fff; stroke: #111827; stroke-width: 2; rx: 8 }
+      .title { fill: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 20px }
+      .muted { fill: #9ca3af; font-size: 13px }
+    </style>
+  </defs>
+  <rect class="bg" width="100%" height="100%"/>
+  <rect x="20" y="20" width="920" height="320" class="panel" rx="8"/>
+  <text x="40" y="52" class="title">Kartu Terkecil — Gameplay (placeholder)</text>
+  <text x="40" y="76" class="muted">Replace this SVG with a real screenshot or add a GIF named <tspan font-family='monospace'>public/demo.gif</tspan></text>
+
+  <!-- mock cards -->
+  <g transform="translate(60,110)">
+    <rect class="card" width="80" height="120"/>
+    <text x="12" y="28" font-size="18" font-family="monospace">K♠</text>
+  </g>
+  <g transform="translate(160,110)">
+    <rect class="card" width="80" height="120"/>
+    <text x="12" y="28" font-size="18" font-family="monospace">Q♥</text>
+  </g>
+  <g transform="translate(260,110)">
+    <rect class="card" width="80" height="120"/>
+    <text x="12" y="28" font-size="18" font-family="monospace">J♣</text>
+  </g>
+
+  <!-- chat / log box -->
+  <rect x="380" y="110" width="440" height="200" rx="6" fill="#0b1221" stroke="#1f2937"/>
+  <text x="396" y="136" fill="#fff" font-family="Arial" font-size="14">Game log</text>
+  <text x="396" y="160" fill="#9ca3af" font-family="Arial" font-size="12">Player1 played J♣</text>
+  <text x="396" y="178" fill="#9ca3af" font-family="Arial" font-size="12">Player2 viewed card (2s)</text>
+  <text x="396" y="196" fill="#9ca3af" font-family="Arial" font-size="12">Player3 drew +1 (penalty)</text>
+
+</svg>

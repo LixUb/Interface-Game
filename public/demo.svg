@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240">
+  <style>
+    .card { fill:#fff; stroke:#111827; rx:8 }
+    .small { font-size:16px; font-family: Arial }
+    .anim { transform-origin: 60px 120px; }
+    @keyframes float { 0% { transform: translateY(0) } 50% { transform: translateY(-8px) } 100% { transform: translateY(0) } }
+    .anim { animation: float 1.2s ease-in-out infinite }
+  </style>
+  <rect width="100%" height="100%" fill="#0b1221"/>
+  <g transform="translate(40,40)">
+    <rect class="card anim" width="80" height="120"/>
+    <text x="18" y="30" fill="#000" font-family="monospace" font-size="18">7♠</text>
+  </g>
+  <g transform="translate(140,60)">
+    <rect class="card" width="80" height="120"/>
+    <text x="18" y="30" fill="#000" font-family="monospace" font-size="18">9♥</text>
+  </g>
+  <g transform="translate(240,40)">
+    <rect class="card anim" width="80" height="120"/>
+    <text x="18" y="30" fill="#000" font-family="monospace" font-size="18">J♣</text>
+  </g>
+  <text x="18" y="210" fill="#9ca3af" class="small">Animated placeholder — replace with real GIF: public/demo.gif</text>
+</svg>

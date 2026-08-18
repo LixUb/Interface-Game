@@ -1,5 +1,17 @@
 # Kartu Terkecil — Multiplayer Web
 
+[![Build Status](https://github.com/LixUb/Interface-Game/actions/workflows/ci.yml/badge.svg)](https://github.com/LixUb/Interface-Game/actions)
+[![Coverage](https://coveralls.io/repos/github/LixUb/Interface-Game/badge.svg?branch=main)](https://coveralls.io/github/LixUb/Interface-Game)
+[![Node](https://img.shields.io/badge/node->=14-brightgreen.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/github/license/LixUb/Interface-Game.svg)](LICENSE)
+[![Author](https://img.shields.io/badge/author-LixUb-blue.svg)](https://github.com/LixUb)
+
+![Gameplay demo](public/screenshot.svg)
+
+---
+
+Bahasa Indonesia
+
 Kartu Terkecil adalah permainan kartu multiplayer realtime berbasis web. Server bersifat authoritative: logika permainan, dek, dan validasi dijalankan di server sementara klien hanya menampilkan UI dan mengirim aksi pemain.
 
 Status: Proyek siswa / proof-of-concept
@@ -12,11 +24,7 @@ Status: Proyek siswa / proof-of-concept
 - Mudah dijalankan secara lokal atau dalam LAN
 
 ## Demo & Screenshot
-(Berikan screenshot atau tautan demo jika tersedia — tambahkan file di `public/` atau tautkan App Service bila dideploy.)
-
-## Persyaratan
-- Node.js (LTS direkomendasikan)
-- npm
+Screenshot/GIF demonstrasi disimpan di `public/` dan disisipkan di atas. Ganti `public/screenshot.svg` atau tambahkan `public/demo.gif` dengan rekaman nyata untuk menampilkan gameplay.
 
 ## Menjalankan secara lokal
 ```bash
@@ -48,49 +56,86 @@ Buka http://localhost:3000 untuk memulai permainan.
 - Siapa pun boleh deklarasi "Selesai"; setelah deklarasi, semua pemain lain mendapat tepat 1 giliran terakhir dimulai dari pemain setelah deklarator, lalu semua kartu dibuka dan skor dihitung.
 - Untuk 13–15 pemain server otomatis memakai 2 deck remi standar (tanpa joker) sehingga kartu yang sama dapat muncul lebih dari sekali.
 
-Catatan: aturan di atas merepresentasikan apa yang saat ini diimplementasikan. Untuk detail aturan resmi atau variasi rumah, lihat kode server.
-
 ## Desain & Catatan teknis
 - Server autoritatif mencegah cheating: semua aksi divalidasi di server.
 - Socket.IO digunakan untuk komunikasi realtime. Pastikan WebSockets diaktifkan bila dideploy ke platform yang memerlukan pengaturan khusus (mis. Azure App Service).
 - Arsitektur saat ini cocok untuk satu instance; jangan melakukan scale-out tanpa mekanisme shared state / adapter (Redis, socket.io-adapter, dsb.).
 
-## Azure App Service (petunjuk deploy)
-Rekomendasi target deploy: Azure App Service (Linux, Node.js LTS)
+---
 
-1. Pastikan `package.json`, `server.js`, dan `public/` berada di root proyek.
-2. Uji lokal (`npm install` kemudian `npm start`).
-3. Di Azure Portal buat App Service dengan runtime Node.js (mis. Node 24 LTS).
-4. Deploy lewat VS Code Azure App Service extension, GitHub Actions, atau ZIP deployment.
-5. Di App Service > Configuration > General settings: aktifkan **WebSockets = On**.
-6. Server sudah mendengarkan `process.env.PORT`.
+English
 
-Catatan: untuk proyek kecil satu instance App Service biasanya cukup. Jika ingin skalabilitas, tambahkan shared backplane (Redis) untuk Socket.IO.
+Kartu Terkecil is a realtime multiplayer web card game. The server is authoritative: game logic, deck handling, and rule validation run on the server while clients render UI and send player actions.
 
-## Mode 1v1 Duel
-- Mode ini untuk tepat 2 pemain.
-- Aturan kartu sama seperti mode Classic.
-- Host dapat mulai segera saat lawan bergabung.
-- Deklarasi "Selesai" memberi lawan satu giliran terakhir sebelum penghitungan.
+Status: student project / proof-of-concept
 
-## Kontribusi
-Semua kontribusi kecil sangat dihargai. Contoh kontribusi:
-- Memperbaiki bug UI/UX
-- Menambah dokumentasi
-- Menambah tes atau validasi server
+## Key features
+- Classic mode: 4–15 players (2 decks used automatically for 13–15 players)
+- 1v1 Duel mode: exactly 2 players
+- Real-time sync using Socket.IO
+- Server-authoritative: rules and penalties enforced server-side
+- Easy to run locally or on a LAN
 
-Cara kontributor:
-1. Fork repo
-2. Buat branch fitur: `git checkout -b fix/readme`
-3. Commit dan push
-4. Buka pull request
+## Demo & Screenshot
+A demonstration image is included in `public/screenshot.svg`. Replace `public/screenshot.svg` or add `public/demo.gif` with an actual gameplay capture to show the game in the README.
 
-## Troubleshooting singkat
-- Jika koneksi realtime bermasalah di deploy, periksa bahwa WebSockets di platform hosting diaktifkan.
-- Jika muncul masalah BIND PORT, pastikan `PORT` diset di lingkungan hosting.
+## Requirements
+- Node.js (LTS recommended)
+- npm
+
+## Running locally
+```bash
+npm install
+npm start
+```
+The server listens on `process.env.PORT` or defaults to 3000.
+Open http://localhost:3000 to start the game.
+
+### Running on LAN
+1. Run the server on one PC.
+2. Find the server's local IP, e.g. `192.168.1.10`.
+3. Other players open `http://192.168.1.10:3000`.
+
+## Implemented rules (short)
+- 4–15 players; join order determines clockwise turn order.
+- Each player receives 4 initial cards.
+- At game start, players may see exactly 2 of their own cards for 3 seconds.
+- Action cards:
+  - 7/8: view one unknown own card for 2 seconds.
+  - 9/10: view one opponent card for 2 seconds.
+  - J: swap one card with an opponent privately.
+  - Q and black K: compare one own card with one opponent card; both cards are revealed for 2 seconds then player chooses to swap or not.
+  - Red K: value -2 (no special effect besides value).
+  - Black K: value 13 (same effect as Q — view, compare, optional swap).
+- You may discard a card that matches the rank of the top discard at any time.
+- Illegal discard/play: penalty of drawing +1 card from the deck.
+- Game also ends when the deck is exhausted.
+- Any player may declare "Selesai" (Finished); after declaration each other player gets exactly one final turn starting from the player after the declarer, then all cards are revealed and scoring is done.
+- For 13–15 players the server uses two standard decks (no jokers) so identical cards may appear more than once.
+
+## Design notes & scaling
+- Server-authoritative prevents cheating and centralizes game state.
+- Socket.IO provides realtime messaging. When deploying to hosting platforms, make sure WebSockets are enabled.
+- The current architecture targets a single instance. Do not scale out without adding a shared adapter/backplane (Redis + socket.io-adapter) for Socket.IO.
+
+## Contributing
+Contributions are welcome. Typical contributions:
+- Fix UI/UX bugs
+- Improve documentation
+- Add tests or server-side validation
+
+How to contribute:
+1. Fork the repo
+2. Create a feature branch: `git checkout -b fix/readme`
+3. Commit and push
+4. Open a pull request
+
+## Troubleshooting
+- If realtime connections fail after deploy, verify WebSockets are enabled on the hosting platform.
+- If the server cannot bind to a port, ensure `PORT` is set by the hosting environment.
 
 ## License
-Lisensi: MIT
+License: MIT
 
-## Kontak
-Untuk pertanyaan atau demo, buka issue di repo atau hubungi pemilik repo.
+## Contact
+Open an issue in the repo for questions or demo requests.
